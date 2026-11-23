@@ -9,12 +9,23 @@ import os
 LINE = "My agent calls every question 'great' before answering it, as if flattery were a substitute for knowing the answer."
 
 
+def validate_length(line):
+    """Gate: the bounty only judges entry.txt of 1-200 UTF-8 characters."""
+    if not 1 <= len(line) <= 200:
+        raise ValueError("LINE must be 1-200 characters")
+
+
+def validate_content(line):
+    """Gate: the line must be real text, not only whitespace."""
+    if not line.strip():
+        raise ValueError("LINE must contain non-whitespace text")
+
+
 def validate_line(line):
-    """Gate: the bounty only judges entry.txt of 1-200 UTF-8 characters,
-    not only whitespace. Fail loudly here rather than silently submitting
-    a line that can never be judged."""
-    if not (1 <= len(line) <= 200) or not line.strip():
-        raise ValueError("LINE must be 1-200 characters of non-whitespace text")
+    """Fail loudly here rather than silently submitting a line that can
+    never be judged."""
+    validate_length(line)
+    validate_content(line)
 
 
 def main():
