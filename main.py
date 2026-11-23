@@ -28,10 +28,17 @@ def validate_line(line):
     validate_content(line)
 
 
-def main():
-    validate_line(LINE)
+def resolve_output_dir():
+    """Resolve the output directory from MAKEFUN_OUTPUT_DIR (default
+    /output) and create it if needed."""
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
+    return out_dir
+
+
+def main():
+    validate_line(LINE)
+    out_dir = resolve_output_dir()
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8") as f:
         f.write(LINE)
